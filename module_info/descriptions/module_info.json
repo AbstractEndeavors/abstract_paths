@@ -1,0 +1,43 @@
+{
+    "module_directory": "/home/computron/Documents/pythonTools/modules/abstract_paths",
+    "module_paths": [
+        "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/__init__.py",
+        "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/abstractFileImporter.py",
+        "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/getnu.py"
+    ],
+    "Imports": [
+        "",
+        "abstract_utilities",
+        "importlib.util",
+        "os",
+        "sys"
+    ],
+    "meta_data": {
+        "name": "abstract_paths",
+        "version": "0.0.0.14",
+        "author": "putkoff",
+        "author_email": "partners@abstractendeavors.com",
+        "description": "",
+        "long_description": "",
+        "long_description_content_type": "text/markdown",
+        "classifiers": [
+            "Development Status :: 3 - Alpha",
+            "Intended Audience :: Developers",
+            "License :: OSI Approved :: MIT License",
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.11"
+        ],
+        "install_requires": [
+            "flask"
+        ],
+        "package_dir": {
+            "": "src"
+        },
+        "packages": [],
+        "python_requires": ">=3.6",
+        "setup_requires": [
+            "wheel"
+        ],
+        "include_package_data": true
+    }
+}

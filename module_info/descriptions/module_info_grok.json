@@ -1,0 +1,19 @@
+{
+  "module_directory": "/home/computron/Documents/pythonTools/modules/abstract_paths",
+  "module_paths": [
+    "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/__init__.py",
+    "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/abstractFileImporter.py",
+    "/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/getnu.py"
+  ],
+  "imports": [
+    "",
+    "abstract_utilities",
+    "importlib.util",
+    "os",
+    "sys"
+  ],
+  "meta_data": {},
+  "src/abstract_paths/abstractFileImporter.py": "Description of script based on prompt: You are analyzing a Python script 'abstractFileImp (mock response)",
+  "src/abstract_paths/__init__.py": "Description of script based on prompt: You are analyzing a Python script '__init__.py' lo (mock response)",
+  "src/abstract_paths/getnu.py": "Description of script based on prompt: You are analyzing a Python script 'getnu.py' locat (mock response)"
+}

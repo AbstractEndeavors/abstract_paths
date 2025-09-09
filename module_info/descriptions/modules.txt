@@ -1,0 +1,11 @@
+Imports:
+
+abstract_utilities
+importlib.util
+os
+sys
+
+Module Paths:
+/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/__init__.py
+/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/abstractFileImporter.py
+/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/getnu.py
