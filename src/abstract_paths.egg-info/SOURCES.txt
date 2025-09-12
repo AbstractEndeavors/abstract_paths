@@ -36,6 +36,8 @@ src/abstract_paths/secure_paths/paths/directories.py
 src/abstract_paths/secure_paths/paths/main_dir.py
 src/abstract_paths/secure_paths/paths/src_dir.py
 src/abstract_paths/secure_paths/paths/static_dir.py
+src/abstract_paths/size_utils/__init__.py
+src/abstract_paths/size_utils/size_utils.py
 tests/testFileContents.py
 tests/testGui.py
 tests/testit.py
