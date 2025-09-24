@@ -15,7 +15,8 @@ def get_allowed_predicate(allowed=None):
     return allowed
 def get_globs(items,recursive: bool = True,allowed=None):
     glob_paths = []
-    for item in make_list(items):
+    items = [item for item in make_list(items) if item]
+    for item in :
         pattern = os.path.join(item, "**/*")  # include all files recursively\n
         nuItems = glob.glob(pattern, recursive=recursive)
         if allowed:
