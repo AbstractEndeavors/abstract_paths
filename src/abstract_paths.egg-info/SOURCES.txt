@@ -31,6 +31,7 @@ src/abstract_paths/python_utils/utils/utils.py
 src/abstract_paths/secure_paths/__init__.py
 src/abstract_paths/secure_paths/secure_utils.py
 src/abstract_paths/secure_paths/paths/__init__.py
+src/abstract_paths/secure_paths/paths/base_dir.py
 src/abstract_paths/secure_paths/paths/directories.py
 src/abstract_paths/secure_paths/paths/main_dir.py
 src/abstract_paths/secure_paths/paths/src_dir.py
