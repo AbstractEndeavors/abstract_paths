@@ -33,3 +33,16 @@ def safe_join(base: Union[str, Path], *parts: Union[str, Path], must_exist: bool
         raise FileNotFoundError(target)
 
     return target
+def get_file_parts(file_path):
+    if file_path:
+        file_path= str(file_path)
+        dirname = os.path.dirname(file_path)
+        dirbase = os.path.basename(dirname)
+        basename = os.path.basename(file_path)
+        filename,ext = os.path.splitext(basename)
+        return {"file_path":file_path,
+                "dirbase":dirbase,
+                "dirname":dirname,
+                "basename":basename,
+                "filename":filename,
+                "ext":ext}

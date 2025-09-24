@@ -23,37 +23,23 @@ def execute_cmd(cmd: str, outfile: Optional[str] = None,
             pass
     return output
 
-def run_local_cmd(cmd: str, workdir: str = None, outfile: Optional[str] = None, **kwargs) -> str:
-    return execute_cmd(cmd, outfile=outfile, workdir=workdir)
-
-def run_local_sudo(cmd: str, password: str, workdir: str = None,
+def run_local_cmd(cmd: str, password: str=None, workdir: str = None,
                    outfile: Optional[str] = None, **kwargs) -> str:
     """
     Run local command with sudo, suppressing the password prompt output.
     """
-    if workdir:
-        wrapped = f"cd {shlex.quote(workdir)} && {cmd}"
-    else:
-        wrapped = cmd
+    cmd = f"cd {shlex.quote(workdir)} && {cmd}" if workdir else cmd
     # -p "" prevents `[sudo] password for user:` in output
-    full = f'echo {shlex.quote(password)} | sudo -S -p "" bash -c {shlex.quote(wrapped)}'
-    return execute_cmd(full, outfile=outfile)
+    if password:
+        cmd = f"echo {shlex.quote(password)} | sudo -S -p \"\" bash -c {shlex.quote(cmd)}"
+    return execute_cmd(cmd, outfile=outfile)
 
-def run_remote_cmd(user_at_host: str, cmd: str, workdir: str = None,
-                   outfile: Optional[str] = None, **kwargs) -> str:
-    remote_cmd = f"cd {shlex.quote(workdir)} && {cmd}" if workdir else cmd
-    ssh_cmd = f"ssh {shlex.quote(user_at_host)} {shlex.quote(remote_cmd)}"
-    return execute_cmd(ssh_cmd, outfile=outfile)
-
-def run_remote_sudo(user_at_host: str, cmd: str, password: str,
+def run_remote_cmd(user_at_host: str, cmd: str, password: str=None,
                     workdir: str = None, outfile: Optional[str] = None, **kwargs) -> str:
-    """
-    Run remote command with sudo, suppressing the password prompt output.
-    """
-    if workdir:
-        wrapped = f"cd {shlex.quote(workdir)} && {cmd}"
-    else:
-        wrapped = cmd
-    remote_cmd = f"echo {shlex.quote(password)} | sudo -S -p \"\" bash -c {shlex.quote(wrapped)}"
+    remote_cmd = f"cd {shlex.quote(workdir)} && {cmd}" if workdir else cmd
+    if password:
+        remote_cmd = f"echo {shlex.quote(password)} | sudo -S -p \"\" bash -c {shlex.quote(remote_cmd)}"
     ssh_cmd = f"ssh {shlex.quote(user_at_host)} {shlex.quote(remote_cmd)}"
     return execute_cmd(ssh_cmd, outfile=outfile)
+run_remote_sudo = run_remote_cmd
+run_local_sudo = run_local_cmd
