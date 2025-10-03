@@ -5,6 +5,15 @@ from abstract_utilities import make_list
 import os,re
 from typing import *
 
+STOP_SEARCH = False
+
+def request_find_console_stop():
+    global STOP_SEARCH
+    STOP_SEARCH = True
+
+def reset_find_console_stop():
+    global STOP_SEARCH
+    STOP_SEARCH = False
 
 def get_contents(
     full_path=None,
@@ -110,6 +119,7 @@ def findContent(
     diffs=False,
     **kwargs
 ):
+    global STOP_SEARCH
     cfg = cfg or define_defaults(
         allowed_exts=allowed_exts,
         unallowed_exts=unallowed_exts,
@@ -117,42 +127,52 @@ def findContent(
         exclude_dirs=exclude_dirs,
         exclude_patterns=exclude_patterns,
         add=add
-        )
+    )
     found_paths = []
-    dirs,files = get_files_and_dirs(
+
+    dirs, files = get_files_and_dirs(
         directory=directory,
         cfg=cfg,
         recursive=recursive
-        )
-    nu_files,found_paths = getPaths(files,strings)
-    
+    )
+    nu_files, found_paths = getPaths(files, strings)
+
     if diffs and found_paths:
         return found_paths
+
     for file_path in nu_files:
+        if STOP_SEARCH:
+            return found_paths   # early exit
+
         if file_path:
             og_content = read_any_file(file_path)
             contents = get_contents(
-                    file_path,
-                    parse_lines=parse_lines,
-                    content = og_content
-                    )
+                file_path,
+                parse_lines=parse_lines,
+                content=og_content
+            )
             found = False
             for content in contents:
-                
-                
+                if STOP_SEARCH:
+                    return found_paths  # bail out cleanly
+
                 if stringInContent(content, strings, total_strings=True, normalize=True):
                     found = True
                     if spec_line:
                         found = find_file(og_content, spec_line, strings, total_strings=True)
                     if found:
                         if get_lines:
-                            # line-level test: ANY match per line
-                            lines = find_lines(og_content, strings=strings, total_strings=False, normalize=True, any_per_line=True)
+                            lines = find_lines(
+                                og_content,
+                                strings=strings,
+                                total_strings=False,
+                                normalize=True,
+                                any_per_line=True
+                            )
                             if lines:
                                 file_path = {"file_path": file_path, "lines": lines}
                         found_paths.append(file_path)
                         break
-                
     return found_paths
 def return_function(start_dir=None,preferred_dir=None,basenames=None,functionName=None):
     if basenames:
