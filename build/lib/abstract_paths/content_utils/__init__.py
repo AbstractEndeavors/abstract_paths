@@ -12,7 +12,9 @@ from .find_content import (
     find_file,
     get_contents,
     stringInContent,
-    findContentAndEdit
+    findContentAndEdit,
+    request_find_console_stop,
+    reset_find_console_stop
     )
 from .diff_utils import *
 from .diff_engine import *
