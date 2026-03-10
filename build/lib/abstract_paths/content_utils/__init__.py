@@ -7,14 +7,6 @@ from .file_utils import (
     build_directory_tree,
     get_directory_map
     )
-from .find_content import (
-    findContent,
-    find_file,
-    get_contents,
-    stringInContent,
-    findContentAndEdit,
-    request_find_console_stop,
-    reset_find_console_stop
-    )
-from .diff_utils import *
 from .diff_engine import *
+from .imports import *
+

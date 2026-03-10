@@ -1,10 +1,12 @@
-from .functions import *
+
+
+from abstract_utilities import get_logFile
+from .functions import (append_log, browse_dir, make_params, open_all_hits, open_one, populate_results, start_collect)
+logger=get_logFile(__name__)
 def initFuncs(self):
-    self.browse_dir = browse_dir
-    self.make_params = make_params
-    self.start_collect = start_collect
-    self.append_log = append_log
-    self.populate_results = populate_results
-    self.open_one = open_one
-    self.open_all_hits = open_all_hits
+    try:
+        for f in (append_log, browse_dir, make_params, open_all_hits, open_one, populate_results, start_collect):
+            setattr(self, f.__name__, f)
+    except Exception as e:
+        logger.info(f"{e}")
     return self

@@ -1,7 +1,8 @@
 
 
+from abstract_utilities import get_logFile
 from .functions import (append_log, browse_dir, make_params, open_all_hits, open_one, populate_results, start_collect)
-
+logger=get_logFile(__name__)
 def initFuncs(self):
     try:
         for f in (append_log, browse_dir, make_params, open_all_hits, open_one, populate_results, start_collect):

@@ -1,8 +1,12 @@
-from .functions import *
+
+
+from abstract_utilities import get_logFile
+from .functions import (append_log, browse_dir, display_map, make_params, start_map)
+logger=get_logFile(__name__)
 def initFuncs(self):
-    self.browse_dir = browse_dir
-    self.make_params = make_params
-    self.start_map = start_map
-    self.append_log = append_log
-    self.display_map = display_map
+    try:
+        for f in (append_log, browse_dir, display_map, make_params, start_map):
+            setattr(self, f.__name__, f)
+    except Exception as e:
+        logger.info(f"{e}")
     return self

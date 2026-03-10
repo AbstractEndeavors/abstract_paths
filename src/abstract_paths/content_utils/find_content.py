@@ -1,9 +1,4 @@
-from .file_utils import findGlobFiles
-from ..file_filtering.file_filters import get_files_and_dirs,define_defaults
-from ..file_handlers.file_readers import read_any_file
-from abstract_utilities import make_list
-import os,re
-from typing import *
+from .imports import *
 
 STOP_SEARCH = False
 
@@ -102,15 +97,7 @@ def getPaths(files, strings):
     return nu_files, found_paths
 
 def findContent(
-    directory: str,
-    cfg: Optional["ScanConfig"] = None,
-    allowed_exts: Optional[Set[str]] = False,
-    unallowed_exts: Optional[Set[str]] = False,
-    exclude_types: Optional[Set[str]] = False,
-    exclude_dirs: Optional[List[str]] = False,
-    exclude_patterns: Optional[List[str]] = False,
-    add = False,
-    recursive: bool = True,
+    *args,
     strings: list=[],
     total_strings=True,
     parse_lines=False,
@@ -120,18 +107,12 @@ def findContent(
     **kwargs
 ):
     global STOP_SEARCH
-    cfg = cfg or define_defaults(
-        allowed_exts=allowed_exts,
-        unallowed_exts=unallowed_exts,
-        exclude_types=exclude_types,
-        exclude_dirs=exclude_dirs,
-        exclude_patterns=exclude_patterns,
-        add=add
-    )
+    directories,cfg,allowed,include_files,recursive = get_file_filters(*args,**kwargs)
+
     found_paths = []
 
     dirs, files = get_files_and_dirs(
-        directory=directory,
+        directory=directories,
         cfg=cfg,
         recursive=recursive
     )
@@ -204,16 +185,7 @@ def editLines(file_paths):
         for obj in lines:
             line,content = get_line_content(obj)
         get_edit(file_path)
-def findContentAndEdit(
-    directory: str,
-    cfg: Optional["ScanConfig"] = None,
-    allowed_exts: Optional[Set[str]] = False,
-    unallowed_exts: Optional[Set[str]] = False,
-    exclude_types: Optional[Set[str]] = False,
-    exclude_dirs: Optional[List[str]] = False,
-    exclude_patterns: Optional[List[str]] = False,
-    add = False,
-    recursive: bool = True,
+def findContentAndEdit(*args,
     strings: list=[],
     total_strings=True,
     parse_lines=False,
@@ -223,17 +195,10 @@ def findContentAndEdit(
     diffs=False,
     **kwargs
     ):
+    directories,cfg,allowed,include_files,recursive = get_file_filters(*args,**kwargs)
 
-    cfg = cfg or define_defaults(
-        allowed_exts=allowed_exts,
-        unallowed_exts=unallowed_exts,
-        exclude_types=exclude_types,
-        exclude_dirs=exclude_dirs,
-        exclude_patterns=exclude_patterns,
-        add=add
-        )
     file_paths = findContent(
-            directory=directory,
+            directory=directories,
             cfg=cfg,
             recursive= recursive,
             strings=strings,

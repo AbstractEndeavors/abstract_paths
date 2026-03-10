@@ -1,18 +1,43 @@
 # abstract_paths/content_utils/src/diff_engine.py
-
-from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import List, Dict, Any, Iterable, Optional
-import logging
-
+from .imports import *
 # re-use your existing primitives
-from .find_content import findContentAndEdit
-from .diff_utils import apply_replacements_to_lines, write_text_atomic
-from ..file_handlers import read_any_file
 
+def apply_replacements_to_lines(og_lines: List[str], matches: List[Dict[str, Any]], adds: List[str]) -> List[str]:
+    """Replace matched lines (1-based) with adds.
+       - If len(adds) == 1: reuse for all matches.
+       - If len(adds) == len(matches): zip 1:1 in order.
+       - Else: fall back to reusing the first add (or raise/log).
+    """
+    if not matches:
+        return og_lines
+
+    if not adds:
+        return og_lines  # nothing to apply
+
+    if len(adds) == 1:
+        rep = adds[0]
+        for m in matches:
+            og_lines[m["line"] - 1] = rep
+        return og_lines
+
+    if len(adds) == len(matches):
+        for m, rep in zip(matches, adds):
+            og_lines[m["line"] - 1] = rep
+        return og_lines
+
+    # mismatch; be forgiving: reuse first add
+    rep = adds[0]
+    for m in matches:
+        og_lines[m["line"] - 1] = rep
+    return og_lines
+
+
+def write_text_atomic(path: str, text: str):
+    tmp = f"{path}.tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(text)
+    os.replace(tmp, path)
 logger = logging.getLogger(__name__)
-
-
 # ──────────────────────────────────────────────────────────────────────────────
 # Data models
 # ──────────────────────────────────────────────────────────────────────────────
@@ -94,30 +119,15 @@ def parse_unified_diff(diff_text: str) -> List[Hunk]:
 
 def resolve_hunk_targets(
     hunk: Hunk,
-    *,
-    directory: str,
-    # NEW: pass-through filters (same surface as FinderTab)
-    allowed_exts: Optional[set] = False,
-    unallowed_exts: Optional[set] = False,
-    exclude_types: Optional[set] = False,
-    exclude_dirs: Optional[list] = False,
-    exclude_patterns: Optional[list] = False,
-    add: bool = False,
-    recursive: bool = True,
+    *args,
+    **kwargs
 ) -> Hunk:
-    matches = findContentAndEdit(
-        directory=directory,
-        allowed_exts=allowed_exts,
-        unallowed_exts=unallowed_exts,
-        exclude_types=exclude_types,
-        exclude_dirs=exclude_dirs,
-        exclude_patterns=exclude_patterns,
-        add=add,
-        recursive=recursive,
+    matches = findContentAndEdit(*args,
         strings=hunk.subs,
         edit_lines=False,
         diffs=True,
         get_lines=True,
+        **kwargs
     ) or []
     hunk.content = matches
     return hunk
@@ -232,35 +242,22 @@ def apply_diff_text(
 
 
 def plan_previews(
+    
     diff_text: str,
-    *,
-    directory: str,
-    # NEW: same pass-through filters
-    allowed_exts: Optional[set] = False,
-    unallowed_exts: Optional[set] = False,
-    exclude_types: Optional[set] = False,
-    exclude_dirs: Optional[list] = False,
-    exclude_patterns: Optional[list] = False,
-    add: bool = False,
-    recursive: bool = True,
+    *args,
+    **kwargs
 ) -> Dict[str, str]:
     hunks = parse_unified_diff(diff_text)
     plan: Dict[str, List[Tuple[List[Dict[str, Any]], List[str]]]] = {}
 
     for h in hunks:
         matches = findContentAndEdit(
-            directory=directory,
-            allowed_exts=allowed_exts,
-            unallowed_exts=unallowed_exts,
-            exclude_types=exclude_types,
-            exclude_dirs=exclude_dirs,
-            exclude_patterns=exclude_patterns,
-            add=add,
-            recursive=recursive,
+            *args,
             strings=h.subs,
             edit_lines=False,
             diffs=True,
             get_lines=True,
+            **kwargs
         ) or []
         for entry in matches:
             fp = entry["file_path"]

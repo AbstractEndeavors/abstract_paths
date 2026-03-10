@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name='abstract_paths',
-    version='0.0.0.158',
+    version='0.0.0.190',
     author='putkoff',
     author_email='partners@abstractendeavors.com',
     description="",
@@ -19,7 +19,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.11',
     ],
-    install_requires=['flask'],
+    install_requires=['flask','aiohttp'],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.6",

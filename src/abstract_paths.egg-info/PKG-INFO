@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: abstract_paths
-Version: 0.0.0.158
+Version: 0.0.0.190
 Author: putkoff
 Author-email: partners@abstractendeavors.com
 Classifier: Development Status :: 3 - Alpha
@@ -11,6 +11,7 @@ Classifier: Programming Language :: Python :: 3.11
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 Requires-Dist: flask
+Requires-Dist: aiohttp
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier

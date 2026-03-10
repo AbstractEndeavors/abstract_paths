@@ -1,9 +1,6 @@
-import os
-import glob
-from typing import *
-from collections import defaultdict
-from ..file_filtering.file_filters import get_files_and_dirs, define_defaults
 #!/usr/bin/env python3
+from .imports import *
+
 from pathlib import PurePosixPath
 def normalize_paths(paths: Optional[Union[bool, str]] = True) -> str:
     """
@@ -160,7 +157,7 @@ def build_directory_tree(
             tree_str.append(f"{prefix}{connector}{item.rstrip('/')}" if not item.endswith('/') else f"{prefix}{connector}{item}")
     else:
         # Recursive: build dir_structure mapping
-        dir_structure = defaultdict(list)
+        dir_structure = DefaultDict(list)
 
         # Add subdirs to their parents
         for rel in rel_dirs:
@@ -240,18 +237,10 @@ def build_directory_tree(
         str_tree = '\n'.join(rendered_tree)
     return str_tree
 
-def get_directory_map(
-    directory: str,
-    cfg:Optional[List[str]] = None,
-    allowed_exts: Optional[Set[str]] = False,
-    unallowed_exts: Optional[Set[str]] = False,
-    exclude_types: Optional[Set[str]] = False,
-    exclude_dirs: Optional[List[str]] = False,
-    exclude_patterns: Optional[List[str]] = False,
-    add = False,
+def get_directory_map(*args,
+    prefix: str = "",
     recursive: bool = True,
     include_files: bool = True,
-    prefix: str = "",
     **kwargs
 ) -> str:
     """
@@ -279,18 +268,12 @@ def get_directory_map(
     Returns:
         The directory tree as a string.
     """
-    cfg = cfg or define_defaults(
-        allowed_exts=allowed_exts,
-        unallowed_exts=unallowed_exts,
-        exclude_types=exclude_types,
-        exclude_dirs=exclude_dirs,
-        exclude_patterns=exclude_patterns,
-        add=add
-        )
+    directories,cfg,allowed,include_files,recursive = get_file_filters(*args,**kwargs)
+    directory = directories[0]
     dirs,files = get_files_and_dirs(
-        directory=directory,
-        cfg=cfg,
-        recursive=recursive,
-        include_files=include_files
+        *args,
+        recursive= recursive,
+        include_files= include_files,
+        **kwargs
         )
     return build_directory_tree(dirs=dirs, files=files, directory=directory, recursive=recursive, include_files=include_files, prefix=prefix)
