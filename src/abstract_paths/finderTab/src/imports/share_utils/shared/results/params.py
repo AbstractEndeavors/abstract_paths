@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QFileDialog,QListWidgetItem
-from abstract_utilities.robust_readers import define_defaults
+from abstract_utilities import define_defaults
 from .resolve_directory import resolve_directory_input
 import os,sys
 # — UI helpers —
