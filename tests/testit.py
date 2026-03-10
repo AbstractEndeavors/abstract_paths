@@ -87,7 +87,6 @@ for diff in diffs:
             last_loaded=file_path
             og_content = read_any_file(file_path)
             ogLines = og_content.split('\n')
-            input('\n'.join(ogLines))
         for j,line in enumerate(content.get('lines')):
             i = line.get('line')
             add = None
@@ -97,6 +96,4 @@ for diff in diffs:
             if add:
                 ogLines[i-1]= add
     
-input('\n'.join(ogLines))
-  
 

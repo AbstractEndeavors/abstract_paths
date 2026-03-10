@@ -58,5 +58,4 @@ diff_text = """
         self.dir_in.setText(d)"""
 previews= parse_diff_text(diff_text=diff_text)
 #directory='/home/computron/Documents/pythonTools/modules/abstract_paths/src/abstract_paths/content_utils/consoles/finderConsole/tabs/editTab')
-input(previews)
-              
+

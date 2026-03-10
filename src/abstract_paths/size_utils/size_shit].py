@@ -8,4 +8,3 @@ src_directory = {"directory":"/home","password":"1"}
 dst_directory = {"directory":'/mnt/24T/consolidated/backups/phones/ubuntu_backups/ubuntu_main/home',"local":False, "host":'solcatcher',"password":"ANy1Kan@!23"}
 src_size_output = transfer_missing(src_directory,dst_directory)
 ##sizes = get_sizes(src_directory,dst_directory)
-input(src_size_output)
