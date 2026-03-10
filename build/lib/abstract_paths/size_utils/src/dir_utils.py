@@ -1,6 +1,6 @@
 import os
 from .cmd_utils import *
-from abstract_utilities.cmd_utils import get_sudo_password,get_env_value
+from abstract_utilities import get_sudo_password,get_env_value
 def get_password(password=None,key=None):
     if password:
         return password
